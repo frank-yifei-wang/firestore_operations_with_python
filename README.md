@@ -9,10 +9,12 @@ Due to this history, I find Cloud Firestore's official documentations to be scat
 To help myself and other Pythoneers, I have tested these common database operations and summarized as follows.
 
 ## Set up Firebase service account
-- Log into [Firebase console](https://console.firebase.google.com/)
-- Go to "Project Overview" > (gear button) > "Project settings" > "Service accounts"
-- Switch "Admin SDK configuration snippet" language to "Python", then hit "Generate new private key"
-- Save the generated JSON file to a secure location
+
+1. Register a free Google account (if you don't have one yet)
+1. Log into [Firebase console](https://console.firebase.google.com/)
+1. Go to "Project Overview" > (gear button) > "Project settings" > "Service accounts"
+1. Switch "Admin SDK configuration snippet" language to "Python", then hit "Generate new private key"
+1. Save the generated JSON file to a secure location
 
 
 ## Connect to Firestore database
