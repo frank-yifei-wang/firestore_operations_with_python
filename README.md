@@ -41,7 +41,9 @@ else:
 
 ## Common operations
 
-These operations work on a small number of documents/collections (in the range of hundreds, when the operation can finish in less than 60 seconds). For operations on a larger set, use paginated operation demonstrated by my repo [Firestore2CSV](https://github.com/frank-yifei-wang/firestore-to-csv).
+The table below lists out the common CRUD (Create/Read/Update/Delete) operations of Firestore database. Since GitHub Markdown doesn't render the HTML table satisfactorily, I have also attached a picture of the the table.
+
+**Note**: These operations work on a small number of documents/collections (in the range of hundreds, when the operation can finish in less than 60 seconds). For operations on a larger set, use paginated operation demonstrated by my repo [Firestore2CSV](https://github.com/frank-yifei-wang/firestore-to-csv).
 
 <table>
     <!-- Headers -->
