@@ -16,6 +16,9 @@ To help myself and other Pythoneers, I have tested these common database operati
 
 
 ## Connect to Firestore database
+
+Source code (also provided in `firestore_conn.py` file):
+
 ```python
 import firebase_admin
 from firebase_admin import credentials
