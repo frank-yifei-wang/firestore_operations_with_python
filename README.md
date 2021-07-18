@@ -41,9 +41,39 @@ else:
 
 ## Common operations
 
-The table below lists out the common CRUD (Create/Read/Update/Delete) operations of Firestore database. Since GitHub Markdown doesn't render the HTML table satisfactorily, I have also attached a picture of the the table.
+The table below lists out the common operations of Firestore database. Since GitHub Markdown doesn't render the HTML table satisfactorily, I have also attached a [picture of the table](https://github.com/frank-yifei-wang/firestore_operations_with_python/blob/main/firestore_operations_with_python.png).
 
 **Note**: These operations work on a small number of documents/collections (in the range of hundreds, when the operation can finish in less than 60 seconds). For operations on a larger set, use paginated operation demonstrated by my repo [Firestore2CSV](https://github.com/frank-yifei-wang/firestore-to-csv).
+
+
+### General operations
+
+#### On database (client)
+
+```python
+str_proj_name = db.project
+all_colls_in_db = db.collections()
+docs_from_different_colls = db.get_all(doc_list)
+coll_group = db.collection_group('coll_id')
+```
+
+#### On collection (CollectionReference)
+
+```python
+str_coll_id = coll_ref.id
+doc_ref_parent = sub_coll_ref.parent
+coll_ref.on_snapshot(callback)
+```
+
+#### On document (DocumentReference)
+
+```python
+str_doc_id = doc_ref.id
+str_doc_path = doc_ref.path
+coll_ref_parent = doc_ref.parent
+```
+
+### CRUD (Create/Read/Update/Delete) operations
 
 <table>
     <!-- Headers -->
@@ -207,4 +237,4 @@ The table below lists out the common CRUD (Create/Read/Update/Delete) operations
             run_transaction(my_transaction, doc_ref)
         </pre></td>
     </tr>
-  </table>
+</table>
