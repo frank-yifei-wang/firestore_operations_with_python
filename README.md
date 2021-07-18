@@ -1,11 +1,47 @@
-[Cloud Firestore](https://firebase.google.com/docs/firestore) is a flexible, scalable NoSQL cloud database, originally developed by [Firebase](https://en.wikipedia.org/wiki/Firebase) but has been acquired by Google and evolved into its flagship offering to compete against AWS DynamoDB and Azure Cosmos DB.
+## Intro
+[Cloud Firestore](https://firebase.google.com/docs/firestore), or "Firestore", is a flexible, scalable NoSQL cloud database, originally developed by [Firebase](https://en.wikipedia.org/wiki/Firebase) but has been acquired by Google and evolved into its flagship offering to compete against AWS DynamoDB and Azure Cosmos DB.
 
 Due to this history, I find Cloud Firestore's official documentations to be scattered across multiple Firebase/Google websites, and not always available in my favorite Python language:
 - [Firebase - Cloud Firestore Documentation](https://firebase.google.com/docs/firestore)
 - [Google Cloud - How-to guides](https://cloud.google.com/firestore/docs/how-to)
 - [GoogleAPIs.dev - Python Client for Google Cloud Firestore](https://googleapis.dev/python/firestore/latest/)
 
-To help myself and other Pythoneers, I have tested  these common database operations and summarized into this table:
+To help myself and other Pythoneers, I have tested these common database operations and summarized as follows.
+
+## Set up Firebase service account
+- Log into [Firebase console](https://console.firebase.google.com/)
+- Go to "Project Overview" > (gear button) > "Project settings" > "Service accounts"
+- Switch "Admin SDK configuration snippet" language to "Python", then hit "Generate new private key"
+- Save the generated JSON file to a secure location
+
+
+## Connect to Firestore database
+```python
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+from datetime import datetime
+
+# Connect to Firestore with service account
+print(f'>>> {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Started connecting to Firestore database...')
+firestore_key = r'your_service_account_file.json'  # Prod
+cred = credentials.Certificate(firestore_key)
+app = firebase_admin.initialize_app(cred)
+db = firestore.client(app=app)
+print(f'<<< {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Firestore database connected \n---')
+
+try:
+    # Firestore operations, such as
+    doc_ref = db.collection('coll_id').document('doc_id')
+except Exception as e_read_write:
+    print(f'??? {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Exception in doing...:', e_read_write)
+else:
+    print(f'<<< {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Finished doing...\n---')
+```
+
+## Common operations
+
+These operations work on a small number of documents/collections (in the range of hundreds, when the operation can finish in less than 60 seconds). For operations on a larger set, use paginated operation demonstrated by my repo [Firestore2CSV](https://github.com/frank-yifei-wang/firestore-to-csv).
 
 <table>
     <!-- Headers -->
@@ -121,8 +157,12 @@ To help myself and other Pythoneers, I have tested  these common database operat
             coll_ref.add(data_dict, document_id=None)  # Add with auto/given doc id
         </pre></td>
         <td><pre lang="python">
-            doc_ref = coll_ref.document('doc_id')
-            doc_ref.create(data_dict)  # Create given doc id. Will fail if existing            
+            doc_ref.set(data_dict, merge=False|True)  # merge defaults to False. Will create doc if nonexistent
+            doc_ref.update(data_dict)  # Will create fields if nonexistent, but error out if no document
+            #
+            doc_ref.update({'object.attribute': 'new_value'})  # Field path (in dot notation) for updating nested object
+            doc_ref.update({'array': firestore.ArrayUnion|ArrayRemove([])}) # Add/remove array items
+            doc_ref.update({'number': firestore.Increment(n)}) # Increment number        
         </pre></td>
     </tr>
     <!-- Delete -->
